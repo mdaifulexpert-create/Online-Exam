@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gift Hub | Online Exam</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f6f9;
+      color: #222;
+    }
+
+    .header {
+      background: #6c2bd9;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.08);
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      margin: 8px 0 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      border: none;
+      background: #6c2bd9;
+      color: white;
+      padding: 13px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #5420ad;
+    }
+
+    .timer {
+      background: #fff0f0;
+      color: #d40000;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      font-size: 19px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .option {
+      display: block;
+      padding: 13px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .option:hover {
+      background: #f2edff;
+    }
+
+    .result {
+      text-align: center;
+    }
+
+    .score {
+      font-size: 40px;
+      font-weight: bold;
+      color: #6c2bd9;
+    }
+
+    #exam,
+    #result {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>🎁 Gift Hub Online Exam</h1>
+    <p>MCQ Examination System</p>
+  </div>
+
+  <div class="container">
+
+    <!-- Student Information -->
+    <div class="card" id="start">
+      <h2>পরীক্ষা শুরু করুন</h2>
+
+      <label>শিক্ষার্থীর নাম</label>
+      <input type="text" id="studentName" placeholder="তোমার নাম লিখুন">
+
+      <label>রোল নম্বর</label>
+      <input type="text" id="studentRoll" placeholder="রোল নম্বর">
+
+      <button onclick="startExam()">পরীক্ষা শুরু করুন</button>
+    </div>
+
+    <!-- Exam -->
+    <div class="card" id="exam">
+
+      <div class="timer">
+        সময় বাকি: <span id="timer">30:00</span>
+      </div>
+
+      <div id="questionBox"></div>
+
+      <button onclick="nextQuestion()">পরবর্তী প্রশ্ন</button>
+
+    </div>
+
+    <!-- Result -->
+    <div class="card result" id="result">
+
+      <h2>🎉 পরীক্ষা শেষ</h2>
+
+      <p id="resultName"></p>
+
+      <div class="score">
+        <span id="score">0</span>
+      </div>
+
+      <p id="total"></p>
+
+      <button onclick="location.reload()">আবার শুরু করুন</button>
+
+    </div>
+
+  </div>
+
+
+<script>
+
+const questions = [
+
+  {
+    question: "বাংলাদেশের রাজধানী কোনটি?",
+    options: ["চট্টগ্রাম", "ঢাকা", "সিলেট", "রাজশাহী"],
+    answer: 1
+  },
+
+  {
+    question: "বাংলা ভাষার বর্ণমালায় স্বরবর্ণ কয়টি?",
+    options: ["১০টি", "১১টি", "১২টি", "১৩টি"],
+    answer: 1
+  },
+
+  {
+    question: "সূর্যের চারদিকে পৃথিবী কী করে?",
+    options: ["ঘোরে", "স্থির থাকে", "থামে", "ভাসে"],
+    answer: 0
+  },
+
+  {
+    question: "পানির রাসায়নিক সংকেত কোনটি?",
+    options: ["CO₂", "O₂", "H₂O", "NaCl"],
+    answer: 2
+  },
+
+  {
+    question: "বাংলাদেশের জাতীয় ফুল কোনটি?",
+    options: ["গোলাপ", "শাপলা", "জবা", "বেলি"],
+    answer: 1
+  }
+
+];
+
+
+let currentQuestion = 0;
+let userAnswers = [];
+let timeLeft = 30 * 60;
+let timerInterval;
+let submitted = false;
+
+
+function startExam() {
+
+  const name = document.getElementById("studentName").value.trim();
+  const roll = document.getElementById("studentRoll").value.trim();
+
+  if (!name || !roll) {
+    alert("নাম ও রোল নম্বর পূরণ করুন।");
+    return;
+  }
+
+  document.getElementById("start").style.display = "none";
+  document.getElementById("exam").style.display = "block";
+
+  showQuestion();
+
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+
+function showQuestion() {
+
+  const q = questions[currentQuestion];
+
+  let html = `
+    <div class="question">
+      ${currentQuestion + 1}. ${q.question}
+    </div>
+  `;
+
+  q.options.forEach((option, index) => {
+
+    html += `
+      <label class="option">
+        <input
+          type="radio"
+          name="answer"
+          value="${index}"
+        >
+        ${option}
+      </label>
+    `;
+
+  });
+
+  document.getElementById("questionBox").innerHTML = html;
+}
+
+
+function nextQuestion() {
+
+  const selected = document.querySelector(
+    'input[name="answer"]:checked'
+  );
+
+  if (!selected) {
+    alert("একটি উত্তর নির্বাচন করুন।");
+    return;
+  }
+
+  userAnswers[currentQuestion] = Number(selected.value);
+
+  currentQuestion++;
+
+  if (currentQuestion >= questions.length) {
+    submitExam();
+  } else {
+    showQuestion();
+  }
+}
+
+
+function updateTimer() {
+
+  timeLeft--;
+
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+
+  document.getElementById("timer").textContent =
+    String(minutes).padStart(2, "0") + ":" +
+    String(seconds).padStart(2, "0");
+
+  if (timeLeft <= 0) {
+    submitExam();
+  }
+}
+
+
+function submitExam() {
+
+  if (submitted) return;
+
+  submitted = true;
+
+  clearInterval(timerInterval);
+
+  let score = 0;
+
+  userAnswers.forEach((answer, index) => {
+
+    if (answer === questions[index].answer) {
+      score++;
+    }
+
+  });
+
+  document.getElementById("exam").style.display = "none";
+  document.getElementById("result").style.display = "block";
+
+  document.getElementById("resultName").textContent =
+    "শিক্ষার্থী: " +
+    document.getElementById("studentName").value;
+
+  document.getElementById("score").textContent = score;
+
+  document.getElementById("total").textContent =
+    "মোট " + questions.length + " প্রশ্নের মধ্যে " + score + "টি সঠিক।";
+}
+
+
+/* অন্য ট্যাব বা অন্য পেজে গেলে পরীক্ষা জমা */
+
+document.addEventListener("visibilitychange", function() {
+
+  if (
+    document.hidden &&
+    document.getElementById("exam").style.display === "block" &&
+    !submitted
+  ) {
+    alert("আপনি পরীক্ষা থেকে বের হয়েছেন। পরীক্ষা জমা হয়ে যাবে।");
+    submitExam();
+  }
+
+});
+
+</script>
+
+</body>
+</html>
