@@ -4,300 +4,614 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gift Hub Online Exam</title>
+<title>অনলাইন কুইজ প্রতিযোগিতা</title>
 
 <style>
 *{
     box-sizing:border-box;
-    font-family:Arial,sans-serif;
 }
 
 body{
     margin:0;
-    background:#f4f6f9;
+    background:#f3f5f7;
+    font-family:"Noto Sans Bengali",Arial,sans-serif;
     color:#222;
 }
 
 .header{
-    background:#6c2bd9;
-    color:white;
+    background:white;
+    padding:20px 15px 12px;
     text-align:center;
-    padding:25px 15px;
+    border-bottom:1px solid #ddd;
 }
 
 .header h1{
     margin:0;
+    font-size:27px;
+    font-weight:700;
 }
 
 .container{
-    max-width:850px;
-    margin:30px auto;
-    padding:15px;
+    width:100%;
+    max-width:700px;
+    margin:25px auto;
+    padding:0 15px;
 }
 
 .card{
     background:white;
-    padding:25px;
-    border-radius:16px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    border-radius:10px;
+    padding:22px;
+    box-shadow:0 2px 12px rgba(0,0,0,.08);
+}
+
+.title{
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:22px;
+}
+
+.field{
+    margin-bottom:15px;
+}
+
+.field label{
+    display:block;
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:7px;
 }
 
 input,select{
     width:100%;
-    padding:13px;
-    margin:7px 0 15px;
+    height:48px;
     border:1px solid #ddd;
-    border-radius:8px;
+    border-radius:5px;
+    padding:0 14px;
     font-size:16px;
+    outline:none;
+    background:white;
 }
 
-button{
-    background:#6c2bd9;
+input:focus,select:focus{
+    border-color:#20b85a;
+}
+
+.next-btn,
+.submit-btn{
+    width:100%;
+    height:52px;
+    border:none;
+    border-radius:6px;
+    background:#20b85a;
     color:white;
-    border:0;
-    padding:13px 22px;
-    border-radius:8px;
+    font-size:18px;
+    font-weight:bold;
     cursor:pointer;
-    font-size:16px;
+    margin-top:8px;
 }
 
-button:hover{
-    background:#5420ad;
+.next-btn:hover,
+.submit-btn:hover{
+    background:#159447;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* Rules */
+
+.rules{
+    background:#fff8e8;
+    border:1px solid #f0d99b;
+    border-radius:7px;
+    padding:15px;
+    margin-top:20px;
+}
+
+.rules h3{
+    margin-top:0;
+}
+
+.rules li{
+    margin:8px 0;
+}
+
+/* Exam */
+
+.exam-top{
+    position:sticky;
+    top:0;
+    background:white;
+    padding:12px 0;
+    z-index:5;
 }
 
 .timer{
-    background:#fff0f0;
-    color:#d00000;
-    padding:13px;
+    background:#ffecec;
+    color:#d40000;
+    padding:12px;
+    border-radius:7px;
     text-align:center;
-    border-radius:8px;
+    font-size:20px;
     font-weight:bold;
-    margin-bottom:20px;
+    margin-bottom:15px;
+}
+
+.progress{
+    text-align:center;
+    color:#555;
+    margin-bottom:18px;
 }
 
 .question{
     font-size:20px;
     font-weight:bold;
+    line-height:1.6;
     margin-bottom:18px;
 }
 
 .option{
     display:block;
     border:1px solid #ddd;
+    border-radius:7px;
     padding:14px;
     margin:10px 0;
-    border-radius:8px;
     cursor:pointer;
+    font-size:17px;
+    transition:.2s;
 }
 
 .option:hover{
-    background:#f3edff;
+    background:#f2fff6;
+    border-color:#20b85a;
 }
+
+.option input{
+    width:auto;
+    height:auto;
+    margin-right:8px;
+}
+
+/* Result */
 
 .result{
     text-align:center;
 }
 
+.result-icon{
+    font-size:55px;
+}
+
 .score{
     font-size:42px;
     font-weight:bold;
-    color:#6c2bd9;
+    color:#20a653;
+    margin:15px 0;
 }
 
-.hidden{
-    display:none;
-}
-
-.info{
-    background:#f5f1ff;
-    padding:12px;
+.result-box{
+    background:#f5f5f5;
+    padding:15px;
     border-radius:8px;
-    margin-bottom:15px;
+    text-align:left;
+    line-height:2;
+}
+
+/* Mobile */
+
+@media(max-width:500px){
+
+    .header h1{
+        font-size:23px;
+    }
+
+    .card{
+        padding:17px;
+    }
+
+    .question{
+        font-size:18px;
+    }
+
+    .option{
+        font-size:16px;
+    }
 }
 </style>
 </head>
 
 <body>
 
+
+<!-- =========================
+     FIRST PAGE
+========================= -->
+
 <div class="header">
-    <h1>🎁 Gift Hub</h1>
-    <p>Online MCQ Examination</p>
+    <h1>অনলাইন কুইজ প্রতিযোগিতা 🎯</h1>
 </div>
+
 
 <div class="container">
 
-<!-- STUDENT INFORMATION -->
-
 <div class="card" id="startPage">
 
-<h2>পরীক্ষা শুরু করুন</h2>
+<div class="title">
+    পরীক্ষার্থীর তথ্য
+</div>
 
-<label>👤 শিক্ষার্থীর নাম</label>
-<input id="studentName" type="text" placeholder="আপনার নাম">
 
-<label>🔢 রোল</label>
-<input id="studentRoll" type="text" placeholder="রোল নম্বর">
+<div class="field">
+<label>👤 নাম:</label>
+<input
+    type="text"
+    id="studentName"
+    placeholder="তোমার নাম লেখো"
+>
+</div>
 
-<label>🏫 স্কুল / মাদ্রাসার নাম</label>
-<input id="institution" type="text" placeholder="প্রতিষ্ঠানের নাম">
 
-<label>📚 বিভাগ / গ্রুপ</label>
+<div class="field">
+<label>🔢 রোল নম্বর:</label>
+<input
+    type="text"
+    id="roll"
+    placeholder="তোমার রোল নম্বর লেখো"
+>
+</div>
+
+
+<div class="field">
+<label>🏫 স্কুলের নাম:</label>
+<input
+    type="text"
+    id="school"
+    placeholder="তোমার স্কুলের নাম লেখো"
+>
+</div>
+
+
+<div class="field">
+<label>📍 জেলা:</label>
+<input
+    type="text"
+    id="district"
+    placeholder="জেলার নাম লেখো"
+>
+</div>
+
+
+<div class="field">
+<label>📋 বোর্ড:</label>
+<input
+    type="text"
+    id="board"
+    placeholder="শিক্ষা বোর্ডের নাম লেখো"
+>
+</div>
+
+
+<div class="field">
+<label>🎓 কোন গ্রুপ:</label>
+
 <select id="group">
-<option value="">বিভাগ নির্বাচন করুন</option>
-<option>Science</option>
-<option>Arts</option>
-<option>Commerce</option>
-<option>Other</option>
-</select>
 
-<label>🏷️ শ্রেণি</label>
-<select id="className">
-<option value="">শ্রেণি নির্বাচন করুন</option>
-<option>৬ষ্ঠ</option>
-<option>৭ম</option>
-<option>৮ম</option>
-<option>৯ম</option>
-<option>১০ম</option>
-<option>অন্যান্য</option>
-</select>
+<option value="">
+তোমার গ্রুপ নির্বাচন করো
+</option>
 
-<button onclick="startExam()">পরীক্ষা শুরু করুন</button>
+<option value="Science">
+Science
+</option>
+
+<option value="Arts">
+Arts
+</option>
+
+<option value="Commerce">
+Commerce
+</option>
+
+</select>
 
 </div>
 
 
-<!-- EXAM PAGE -->
+<div class="field">
+<label>🧑‍🎓 কোন গ্রুপ থেকে পরীক্ষায় অংশগ্রহণ করছেন?</label>
+
+<select id="participationGroup">
+
+<option value="">
+নির্বাচন করুন
+</option>
+
+<option value="Science">
+Science
+</option>
+
+<option value="Arts">
+Arts
+</option>
+
+<option value="Commerce">
+Commerce
+</option>
+
+</select>
+
+</div>
+
+
+<div class="rules">
+
+<h3>📌 পরীক্ষার নিয়ম</h3>
+
+<ul>
+
+<li>প্রতিটি প্রশ্নের উত্তর দেওয়া বাধ্যতামূলক।</li>
+
+<li>নির্ধারিত সময় শেষ হলে পরীক্ষা অটোমেটিক জমা হবে।</li>
+
+<li>পরীক্ষার সময় অন্য ট্যাব বা পেজে গেলে পরীক্ষা জমা হয়ে যাবে।</li>
+
+<li>Back button দিয়ে বের হওয়ার চেষ্টা করলে পরীক্ষা জমা হবে।</li>
+
+<li>পরীক্ষা জমা দেওয়ার পর পুনরায় একই পরীক্ষা দেওয়া যাবে না।</li>
+
+<li>প্রতিটি প্রশ্নের জন্য নির্ধারিত নম্বর অনুযায়ী ফলাফল তৈরি হবে।</li>
+
+</ul>
+
+</div>
+
+
+<button
+    class="next-btn"
+    onclick="startExam()"
+>
+পরবর্তী ধাপে যান
+</button>
+
+</div>
+
+
+<!-- =========================
+     EXAM PAGE
+========================= -->
 
 <div class="card hidden" id="examPage">
 
-<div class="info">
-    <b>পরীক্ষার্থী:</b>
-    <span id="showName"></span>
-    <br>
-    <b>রোল:</b>
-    <span id="showRoll"></span>
-</div>
+<div class="exam-top">
 
 <div class="timer">
 ⏱️ সময় বাকি:
 <span id="timer">30:00</span>
 </div>
 
+<div class="progress">
+প্রশ্ন <span id="questionNumber">1</span>
+ /
+ <span id="totalQuestions">5</span>
+</div>
+
+</div>
+
+
 <div id="questionArea"></div>
 
-<button onclick="nextQuestion()">পরবর্তী প্রশ্ন</button>
 
-</div>
-
-
-<!-- RESULT -->
-
-<div class="card result hidden" id="resultPage">
-
-<h2>🎉 পরীক্ষা শেষ</h2>
-
-<p id="resultStudent"></p>
-
-<div class="score">
-<span id="finalScore">0</span>
-</div>
-
-<p id="resultDetails"></p>
-
-<button onclick="location.reload()">
-আবার পরীক্ষা দিন
+<button
+    class="next-btn"
+    onclick="nextQuestion()"
+>
+পরবর্তী প্রশ্ন
 </button>
 
 </div>
 
+
+<!-- =========================
+     RESULT PAGE
+========================= -->
+
+<div class="card result hidden" id="resultPage">
+
+<div class="result-icon">
+🎉
 </div>
+
+<h2>
+পরীক্ষা সম্পন্ন হয়েছে
+</h2>
+
+<div class="score" id="score">
+0 / 5
+</div>
+
+
+<div class="result-box">
+
+<div>
+👤 <b>নাম:</b>
+<span id="resultName"></span>
+</div>
+
+<div>
+🔢 <b>রোল:</b>
+<span id="resultRoll"></span>
+</div>
+
+<div>
+🏫 <b>স্কুল:</b>
+<span id="resultSchool"></span>
+</div>
+
+<div>
+📍 <b>জেলা:</b>
+<span id="resultDistrict"></span>
+</div>
+
+<div>
+📋 <b>বোর্ড:</b>
+<span id="resultBoard"></span>
+</div>
+
+<div>
+🎓 <b>গ্রুপ:</b>
+<span id="resultGroup"></span>
+</div>
+
+<hr>
+
+<div>
+📝 <b>সঠিক:</b>
+<span id="correct"></span>
+</div>
+
+<div>
+❌ <b>ভুল:</b>
+<span id="wrong"></span>
+</div>
+
+<div>
+📊 <b>মোট নম্বর:</b>
+<span id="marks"></span>
+</div>
+
+<div>
+⏱️ <b>সময়:</b>
+<span id="examTime"></span>
+</div>
+
+<div>
+📅 <b>তারিখ:</b>
+<span id="examDate"></span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 
 
 <script>
 
-/* =========================
+/* ==========================================
+   ADMIN SETTINGS
+   এখান থেকে পরীক্ষার সময় ও প্রশ্ন সংখ্যা
+   পরিবর্তন করা যাবে
+========================================== */
+
+const EXAM_TIME_MINUTES = 30;
+
+
+/* ==========================================
    QUESTIONS
-========================= */
+
+   এখানে নতুন MCQ যোগ করতে পারবে।
+
+   answer:
+   0 = প্রথম অপশন
+   1 = দ্বিতীয় অপশন
+   2 = তৃতীয় অপশন
+   3 = চতুর্থ অপশন
+========================================== */
 
 const questions = [
 
 {
-question:"বাংলাদেশের রাজধানী কোনটি?",
-options:[
-"চট্টগ্রাম",
-"ঢাকা",
-"সিলেট",
-"রাজশাহী"
-],
-answer:1
+    question:"বাংলাদেশের রাজধানী কোনটি?",
+    options:[
+        "চট্টগ্রাম",
+        "ঢাকা",
+        "সিলেট",
+        "রাজশাহী"
+    ],
+    answer:1
 },
 
 {
-question:"বাংলাদেশের জাতীয় ফুল কোনটি?",
-options:[
-"গোলাপ",
-"শাপলা",
-"জবা",
-"বেলি"
-],
-answer:1
+    question:"বাংলাদেশের জাতীয় ফুল কোনটি?",
+    options:[
+        "গোলাপ",
+        "শাপলা",
+        "জবা",
+        "বেলি"
+    ],
+    answer:1
 },
 
 {
-question:"পানির রাসায়নিক সংকেত কোনটি?",
-options:[
-"CO2",
-"O2",
-"H2O",
-"NaCl"
-],
-answer:2
+    question:"পানির রাসায়নিক সংকেত কোনটি?",
+    options:[
+        "CO₂",
+        "O₂",
+        "H₂O",
+        "NaCl"
+    ],
+    answer:2
 },
 
 {
-question:"সূর্যের চারদিকে পৃথিবী কী করে?",
-options:[
-"ঘোরে",
-"স্থির থাকে",
-"থামে",
-"ভাসে"
-],
-answer:0
+    question:"সূর্যের চারদিকে পৃথিবী কী করে?",
+    options:[
+        "ঘোরে",
+        "স্থির থাকে",
+        "থামে",
+        "ভাসে"
+    ],
+    answer:0
 },
 
 {
-question:"বাংলা ভাষার বর্ণমালায় স্বরবর্ণ কয়টি?",
-options:[
-"১০টি",
-"১১টি",
-"১২টি",
-"১৩টি"
-],
-answer:1
+    question:"বাংলা ভাষার বর্ণমালায় স্বরবর্ণ কয়টি?",
+    options:[
+        "১০টি",
+        "১১টি",
+        "১২টি",
+        "১৩টি"
+    ],
+    answer:1
 }
 
 ];
 
 
-/* =========================
+/* ==========================================
    VARIABLES
-========================= */
+========================================== */
 
 let currentQuestion = 0;
+
 let answers = [];
 
-let timeLeft = 30 * 60;
+let timeLeft = EXAM_TIME_MINUTES * 60;
 
-let timerInterval;
+let timerInterval = null;
 
 let submitted = false;
 
-let studentData = {};
+let examStarted = false;
+
+let startTime = null;
 
 
-/* =========================
+/* ==========================================
+   STUDENT DATA
+========================================== */
+
+let student = {};
+
+
+/* ==========================================
    START EXAM
-========================= */
+========================================== */
 
 function startExam(){
 
@@ -305,19 +619,33 @@ const name =
 document.getElementById("studentName").value.trim();
 
 const roll =
-document.getElementById("studentRoll").value.trim();
+document.getElementById("roll").value.trim();
 
-const institution =
-document.getElementById("institution").value.trim();
+const school =
+document.getElementById("school").value.trim();
+
+const district =
+document.getElementById("district").value.trim();
+
+const board =
+document.getElementById("board").value.trim();
 
 const group =
 document.getElementById("group").value;
 
-const className =
-document.getElementById("className").value;
+const participationGroup =
+document.getElementById("participationGroup").value;
 
 
-if(!name || !roll || !institution || !group || !className){
+if(
+!name ||
+!roll ||
+!school ||
+!district ||
+!board ||
+!group ||
+!participationGroup
+){
 
 alert("সব তথ্য পূরণ করুন।");
 
@@ -326,53 +654,90 @@ return;
 }
 
 
-studentData = {
+/*
+   একই ব্রাউজার থেকে একই পরীক্ষায়
+   দ্বিতীয়বার প্রবেশ বন্ধ করার জন্য
+*/
 
-name:name,
-roll:roll,
-institution:institution,
-group:group,
-className:className
+if(localStorage.getItem("giftHubExamSubmitted") === "yes"){
 
-};
+alert(
+"আপনি এই পরীক্ষা ইতোমধ্যে দিয়েছেন।"
+);
 
-
-document.getElementById("showName").textContent=name;
-
-document.getElementById("showRoll").textContent=roll;
-
-
-document.getElementById("startPage").classList.add("hidden");
-
-document.getElementById("examPage").classList.remove("hidden");
-
-
-showQuestion();
-
-timerInterval=setInterval(updateTimer,1000);
+return;
 
 }
 
 
-/* =========================
+student = {
+
+name,
+roll,
+school,
+district,
+board,
+group,
+participationGroup
+
+};
+
+
+document.getElementById("totalQuestions")
+.textContent = questions.length;
+
+
+document.getElementById("startPage")
+.classList.add("hidden");
+
+
+document.getElementById("examPage")
+.classList.remove("hidden");
+
+
+examStarted = true;
+
+startTime = new Date();
+
+showQuestion();
+
+
+timerInterval =
+setInterval(updateTimer,1000);
+
+}
+
+
+/* ==========================================
    SHOW QUESTION
-========================= */
+========================================== */
 
 function showQuestion(){
 
-const q=questions[currentQuestion];
+const q = questions[currentQuestion];
 
-let html="";
 
-html+=`
+document.getElementById("questionNumber")
+.textContent =
+currentQuestion + 1;
+
+
+let html = `
+
 <div class="question">
-${currentQuestion+1}. ${q.question}
+
+${currentQuestion + 1}.
+${q.question}
+
 </div>
+
 `;
+
 
 q.options.forEach((option,index)=>{
 
-html+=`
+html += `
+
 <label class="option">
 
 <input
@@ -384,19 +749,21 @@ value="${index}"
 ${option}
 
 </label>
+
 `;
 
 });
 
 
-document.getElementById("questionArea").innerHTML=html;
+document.getElementById("questionArea")
+.innerHTML = html;
 
 }
 
 
-/* =========================
+/* ==========================================
    NEXT QUESTION
-========================= */
+========================================== */
 
 function nextQuestion(){
 
@@ -408,49 +775,56 @@ document.querySelector(
 
 if(!selected){
 
-alert("একটি উত্তর নির্বাচন করুন।");
+alert(
+"এই প্রশ্নের একটি উত্তর নির্বাচন করুন।"
+);
 
 return;
 
 }
 
 
-answers[currentQuestion]=
+answers[currentQuestion] =
 Number(selected.value);
 
 
 currentQuestion++;
 
 
-if(currentQuestion>=questions.length){
+if(
+currentQuestion >= questions.length
+){
 
-submitExam();
+submitExam("normal");
+
+return;
 
 }
 
-else{
 
 showQuestion();
 
 }
 
-}
 
-
-/* =========================
+/* ==========================================
    TIMER
-========================= */
+========================================== */
 
 function updateTimer(){
 
 timeLeft--;
 
-let minutes=Math.floor(timeLeft/60);
 
-let seconds=timeLeft%60;
+const minutes =
+Math.floor(timeLeft / 60);
+
+const seconds =
+timeLeft % 60;
 
 
-document.getElementById("timer").textContent=
+document.getElementById("timer")
+.textContent =
 
 String(minutes).padStart(2,"0")
 +
@@ -459,33 +833,44 @@ String(minutes).padStart(2,"0")
 String(seconds).padStart(2,"0");
 
 
-if(timeLeft<=0){
+if(timeLeft <= 0){
 
-submitExam();
-
-}
+submitExam("time");
 
 }
 
+}
 
-/* =========================
-   SUBMIT
-========================= */
 
-function submitExam(){
+/* ==========================================
+   SUBMIT EXAM
+========================================== */
 
-if(submitted)return;
+function submitExam(reason){
 
-submitted=true;
+if(submitted){
+return;
+}
+
+
+submitted = true;
+
+examStarted = false;
+
 
 clearInterval(timerInterval);
 
 
-let correct=0;
+/* Calculate score */
+
+let correct = 0;
+
 
 answers.forEach((answer,index)=>{
 
-if(answer===questions[index].answer){
+if(
+answer === questions[index].answer
+){
 
 correct++;
 
@@ -494,11 +879,54 @@ correct++;
 });
 
 
-let wrong=questions.length-correct;
+const wrong =
+questions.length - correct;
 
-let percentage=
-Math.round((correct/questions.length)*100);
 
+const marks = correct;
+
+
+/* Time used */
+
+const usedSeconds =
+(EXAM_TIME_MINUTES * 60) - timeLeft;
+
+
+const usedMinutes =
+Math.floor(usedSeconds / 60);
+
+
+const usedRemainingSeconds =
+usedSeconds % 60;
+
+
+const usedTime =
+
+String(usedMinutes).padStart(2,"0")
++
+":"
++
+String(usedRemainingSeconds).padStart(2,"0");
+
+
+/* Date */
+
+const now = new Date();
+
+
+const date =
+now.toLocaleDateString("bn-BD");
+
+
+/* Save local submission */
+
+localStorage.setItem(
+"giftHubExamSubmitted",
+"yes"
+);
+
+
+/* Show result */
 
 document.getElementById("examPage")
 .classList.add("hidden");
@@ -508,38 +936,71 @@ document.getElementById("resultPage")
 .classList.remove("hidden");
 
 
-document.getElementById("resultStudent").innerHTML=
-
-`
-<b>${studentData.name}</b><br>
-রোল: ${studentData.roll}<br>
-প্রতিষ্ঠান: ${studentData.institution}<br>
-বিভাগ: ${studentData.group}<br>
-শ্রেণি: ${studentData.className}
-`;
+document.getElementById("score")
+.textContent =
+correct + " / " + questions.length;
 
 
-document.getElementById("finalScore")
-.textContent=
-correct+" / "+questions.length;
+document.getElementById("resultName")
+.textContent =
+student.name;
 
 
-document.getElementById("resultDetails")
-.innerHTML=
+document.getElementById("resultRoll")
+.textContent =
+student.roll;
 
-`
-📝 সঠিক: ${correct}<br>
-❌ ভুল: ${wrong}<br>
-📊 মোট নম্বর: ${correct}<br>
-📈 শতাংশ: ${percentage}%
-`;
+
+document.getElementById("resultSchool")
+.textContent =
+student.school;
+
+
+document.getElementById("resultDistrict")
+.textContent =
+student.district;
+
+
+document.getElementById("resultBoard")
+.textContent =
+student.board;
+
+
+document.getElementById("resultGroup")
+.textContent =
+student.group;
+
+
+document.getElementById("correct")
+.textContent =
+correct;
+
+
+document.getElementById("wrong")
+.textContent =
+wrong;
+
+
+document.getElementById("marks")
+.textContent =
+marks + " / " + questions.length;
+
+
+document.getElementById("examTime")
+.textContent =
+usedTime;
+
+
+document.getElementById("examDate")
+.textContent =
+date;
 
 }
 
 
-/* =========================
-   TAB / PAGE CHANGE
-========================= */
+/* ==========================================
+   TAB / OTHER PAGE DETECTION
+========================================== */
 
 document.addEventListener(
 "visibilitychange",
@@ -547,45 +1008,65 @@ function(){
 
 if(
 document.hidden &&
-!submitted &&
-!document.getElementById("examPage")
-.classList.contains("hidden")
+examStarted &&
+!submitted
 ){
 
-submitExam();
-
-alert(
-"আপনি পরীক্ষা থেকে বের হয়েছেন। আপনার পরীক্ষা জমা হয়ে গেছে।"
-);
+submitExam("left");
 
 }
 
 });
 
 
-/* =========================
-   BACK BUTTON PROTECTION
-========================= */
+/* ==========================================
+   BACK BUTTON
+========================================== */
 
-history.pushState(null,null,location.href);
+history.pushState(
+null,
+"",
+location.href
+);
 
-window.onpopstate=function(){
+
+window.addEventListener(
+"popstate",
+function(){
 
 if(
-!submitted &&
-!document.getElementById("examPage")
-.classList.contains("hidden")
+examStarted &&
+!submitted
 ){
 
-submitExam();
-
-alert(
-"পরীক্ষা থেকে বের হওয়ার কারণে আপনার পরীক্ষা জমা হয়েছে।"
-);
+submitExam("back");
 
 }
 
-};
+});
+
+
+/* ==========================================
+   CLOSE / REFRESH WARNING
+========================================== */
+
+window.addEventListener(
+"beforeunload",
+function(event){
+
+if(
+examStarted &&
+!submitted
+){
+
+event.preventDefault();
+
+event.returnValue =
+"আপনি পরীক্ষা থেকে বের হলে পরীক্ষা জমা হয়ে যাবে।";
+
+}
+
+});
 
 </script>
 
